@@ -2,13 +2,92 @@
 <html>
   <head>
     <title>Marcy labs demo </title>
-    <link rel="stylesheet" href="styles.css">
-    <style
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<link rel="stylesheet" href="style.css">  
   </head>
 
   <body>
-    <h1>Welcome to Marcy Labs demo</h1>
-    <script src="localDB.js></script>
+    <h1>Pet Tracker</h1>
+	  
+	  <form>
+	  <h1>Add a new Pet!</h1>
+		  <label for="Pet_Name">Pet Name<span aria-hidden="true" class="required">*</span>: </label> 
+		  <!-- Dev Note | snippet: <span aria-hidden="true" class="required">*</span> | description: Removes the * from the accessibility tree so that it's not read by a screen reader. | source: https://www.accessibility-developer-guide.com/examples/forms/required/ -->
+		  <input type="text" id="Pet_Name" name="Pet_Name" value="" required> <br>
+		  
+		  <label for="Profile">Profile Picture<span aria-hidden="true" class="required">*</span> </label>
+		  <input type="text" id="Profile" name="Profile" value="Picture URL" required> <br>
+		  
+		  <fieldset required> <!-- Make sure that required is able to work here -->
+		  <legend>Species<span aria-hidden="true" class="required">*</span></legend>
+		  
+		  <input type ="radio" id="GoodBoy" name="Dog" value="Dog">
+		  <label for="GoodBoy"> Dog </label> 
+			  <br>
+			  
+		  <input type ="radio" id="DevilSpawn" name="Cat" value="Cat">
+		  <label for="DevilSpawn"> Cat </label> 
+			  <br>
+			  
+		  <input type ="radio" id="NYCPigeon" name="Bird" value="Bird">
+		  <label for="NYCPigeon"> Bird </label> 
+			  <br>
+		  </fieldset>
+	  
+	     <input type ="checkbox" id="PetFriendliness" name="Friends" value="Friends">
+		 <label for="PetFriendliness"> Are they friendly? </label> 
+	  </form>
+	  
+	  <!-- Don't forget to make all of these values empty on load -->
+	  
+	  <h1>Pet List</h1>
+	  
+	  <div id="Pets">
+		   
+		<div class="row">
+	  
+	  <div id="PetEl1" class ="col">
+		  <div class="card">
+		  <img id="AnimalPic1" src="..." class="card-img-top" alt="firstAnimPicture"> <!-- Try to swap out the alt text for name of the description of animal picture -->
+		  <div class="card-body">
+			<h5 id="AnimalTitle1" class="card-title">Pet Name</h5>
+			  <h6 id="AnimalSpecies1" class="card-title">Species</h6>
+			<p id="AnimalDesc1"  class="card-text">Friendly or not friendly</p>
+			<a id="Rmv1" href="#" class="btn btn-primary">Remove</a>
+		  </div>
+		</div>
+	  </div>
+		  
+  <div id="PetEl2" class ="col">
+		  <div class="card" >
+		  <img id="AnimalPic2" src="..." class="card-img-top" alt="firstAnimPicture"> <!-- Try to swap out the alt text for name of the description of animal picture -->
+		  <div class="card-body">
+			<h5 id="AnimalTitle2" class="card-title">Card title</h5>
+			  <h6 id="AnimalSpecies2" class="card-title">Species</h6>
+			<p id="AnimalDesc2"  class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+			<a id="Rmv2" href="#" class="btn btn-primary">Remove</a>
+		  </div>
+		</div>
+	  </div>
+		  
+  <div id="PetEl3" class ="col">
+		  <div class="card">
+		  <img id="AnimalPic3" src="..." class="card-img-top" alt="firstAnimPicture"> <!-- Try to swap out the alt text for name of the description of animal picture -->
+		  <div class="card-body">
+			<h5 id="AnimalTitle3" class="card-title">Card title</h5>
+			  <h6 id="AnimalSpecies3" class="card-title">Species</h6>
+			<p id="AnimalDesc3"  class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+			<a id="Rmv3" href="#" class="btn btn-primary">Remove</a>
+		  </div>
+		</div>
+	  </div>
+	  
+	  </div>
+	</div>
+	  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  
+    <script src="localDB.js"></script>
   </body>
   
 </html>

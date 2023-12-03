@@ -1,9 +1,39 @@
-html{
+body{
 height:100vh;
 width:100vw;
-background-color:blue;
+background-color:#CDCDCD;
 }
 
-h1{
-font-size:12px;
+#Pets{
+  border-style: solid;
+	padding:2%;
+	width:50vw;
+}
+
+img { 
+height: 15rem; 
+}
+
+sup { 
+color: red; 
+}
+
+form, ul {
+display: flex; gap: 1rem; padding: 1rem; border: 0.1rem solid #000; 
+}
+
+form {
+flex-direction: column; width: fit-content; 
+}
+
+#pet-list { 
+flex-wrap: wrap; list-style: none; 
+}
+
+.required {
+  color: red;
+}
+
+.card{
+	width: 13rem;
 }
