@@ -9,16 +9,16 @@
   <body>
     <h1>Pet Tracker</h1>
 	  
-	  <form>
+	  <form id="PetForm">
 	  <h1>Add a new Pet!</h1>
 		  <label for="Pet_Name">Pet Name<span aria-hidden="true" class="required">*</span>: </label> 
 		  <!-- Dev Note | snippet: <span aria-hidden="true" class="required">*</span> | description: Removes the * from the accessibility tree so that it's not read by a screen reader. | source: https://www.accessibility-developer-guide.com/examples/forms/required/ -->
 		  <input type="text" id="Pet_Name" name="Pet_Name" value="" required> <br>
 		  
 		  <label for="Profile">Profile Picture<span aria-hidden="true" class="required">*</span> </label>
-		  <input type="text" id="Profile" name="Profile" value="Picture URL" required> <br>
+		  <input type="text" id="ProfileURL" name="Profile" placeholder="Picture URL" required> <br>
 		  
-		  <fieldset required> <!-- Make sure that required is able to work here -->
+		  <fieldset id="SpeciesFieldSet" required> <!-- Make sure that required is able to work here -->
 		  <legend>Species<span aria-hidden="true" class="required">*</span></legend>
 		  
 		  <input type ="radio" id="GoodBoy" name="Dog" value="Dog">
@@ -36,6 +36,8 @@
 	  
 	     <input type ="checkbox" id="PetFriendliness" name="Friends" value="Friends">
 		 <label for="PetFriendliness"> Are they friendly? </label> 
+		  
+		 <input id="SubmitBtn" type="submit" value="Add Pet!"> 
 	  </form>
 	  
 	  <!-- Don't forget to make all of these values empty on load -->
@@ -46,38 +48,38 @@
 		   
 		<div class="row">
 	  
-	  <div id="PetEl1" class ="col">
-		  <div class="card">
+	  <div class ="col">
+		  <div id="PetEl0"  class="card">
+		  <img id="AnimalPic0" src="..." class="card-img-top" alt="firstAnimPicture"> <!-- Try to swap out the alt text for name of the description of animal picture -->
+		  <div id="PetData" class="card-body">
+			<h5 id="AnimalTitle0" class="card-title">Pet Name</h5>
+			<h6 id="AnimalSpecies0" class="card-title">Species</h6>
+			<p id="AnimalDesc0"  class="card-text">Friendly or not friendly</p>
+			<a id="Rmv0" href="#" class="btn btn-primary">Remove</a>
+		  </div>
+		</div>
+	  </div>
+		  
+  <div class ="col">
+		  <div id="PetEl1" class="card" >
 		  <img id="AnimalPic1" src="..." class="card-img-top" alt="firstAnimPicture"> <!-- Try to swap out the alt text for name of the description of animal picture -->
-		  <div class="card-body">
-			<h5 id="AnimalTitle1" class="card-title">Pet Name</h5>
+		  <div id="PetData1" class="card-body">
+			<h5 id="AnimalTitle1" class="card-title">Card title</h5>
 			  <h6 id="AnimalSpecies1" class="card-title">Species</h6>
-			<p id="AnimalDesc1"  class="card-text">Friendly or not friendly</p>
+			<p id="AnimalDesc1"  class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 			<a id="Rmv1" href="#" class="btn btn-primary">Remove</a>
 		  </div>
 		</div>
 	  </div>
 		  
-  <div id="PetEl2" class ="col">
-		  <div class="card" >
+  <div class ="col">
+		  <div id="PetEl2" class="card">
 		  <img id="AnimalPic2" src="..." class="card-img-top" alt="firstAnimPicture"> <!-- Try to swap out the alt text for name of the description of animal picture -->
-		  <div class="card-body">
+		  <div id="PetData2" class="card-body">
 			<h5 id="AnimalTitle2" class="card-title">Card title</h5>
 			  <h6 id="AnimalSpecies2" class="card-title">Species</h6>
 			<p id="AnimalDesc2"  class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 			<a id="Rmv2" href="#" class="btn btn-primary">Remove</a>
-		  </div>
-		</div>
-	  </div>
-		  
-  <div id="PetEl3" class ="col">
-		  <div class="card">
-		  <img id="AnimalPic3" src="..." class="card-img-top" alt="firstAnimPicture"> <!-- Try to swap out the alt text for name of the description of animal picture -->
-		  <div class="card-body">
-			<h5 id="AnimalTitle3" class="card-title">Card title</h5>
-			  <h6 id="AnimalSpecies3" class="card-title">Species</h6>
-			<p id="AnimalDesc3"  class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-			<a id="Rmv3" href="#" class="btn btn-primary">Remove</a>
 		  </div>
 		</div>
 	  </div>

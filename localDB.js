@@ -1,12 +1,22 @@
+/*
+Remove button removes element from list
+Figure out what route names are and how to make the RESTful
+upload items to db when finished creating them
+*/
 console.log("Hello World");
 
 // Dictionary makes element easy to delete
 // List makes element easy to find and use
 
 // Grab child id from cards
-const card1 = document.getElementById("PetEl1");
-const card2 = document.getElementById("PetEl2");
-const card1 = document.getElementById("PetEl3");
+let cardList = []
+const card1 = document.getElementById("PetEl0");
+const card2 = document.getElementById("PetEl1");
+const card3 = document.getElementById("PetEl2");
+
+cardList.push(card1)
+cardList.push(card2)
+cardList.push(card3)
 
 let ButtonDictionary = {
   'card1': "Index1",
@@ -19,10 +29,12 @@ let AnimalArray = []
 function PopulateCard(cardID, newImg, newAlt, newName, speciesType, friendliness, BtnNumber, ArrayIndex){
 	const child = cardID.children;
 	child[0].src = newImg;
-	child[0].altKey = newAlt;
-	child[1].innerHTML = newName;
-	child[2].innerHTML = speciesType;
-	child[3].innerHTML = friendliness;
+	child[0].alt = newAlt;
+	console.log(newAlt)
+	const stepChild = child[1].children;
+	stepChild[0].innerHTML = newName;
+	stepChild[1].innerHTML = speciesType;
+	stepChild[2].innerHTML = friendliness;
 	ButtonDictionary[BtnNumber] = ArrayIndex;
 }
 
@@ -36,25 +48,25 @@ function NewAnimalObj (name, url, species, kindness, animalNum){
 
 
 function StartupCardInfo(){
-	for(var i = 0; i < 3; i++){
-		PopulateCard("card" + i.toString(),
-				NewAnimalObj[i].url,
-				"This is a picture of " + NewAnimalObj[i].name + " animal of the species " + NewAnimalObj[i].species + ". This is a " + NewAnimalObj[i].kindness + " animal",
-				NewAnimalObj[i].name,
-				NewAnimalObj[i].species,
-				NewAnimalObj[i].kindness,
+	for(var i = 0; i <= 2; i++){
+		PopulateCard(cardList[i],
+				AnimalArray[i].url,
+				"This is a picture of " + AnimalArray[i].name + " animal of the species " + AnimalArray[i].species + ". This is a " + AnimalArray[i].kindness + " animal",
+				AnimalArray[i].name,
+				AnimalArray[i].species,
+				AnimalArray[i].kindness,
 				"card2",
-				NewAnimalObj[i].animalNum
+				AnimalArray[i].animalNum
 				);
 	}
 }
 
 
-function SumbitNewAnimal(){
-	const submittedName = "";
-	const submittedURL = "";
-	const submittedSpecies = "";
-	const submittedFriendliness = "";
+function SumbitNewAnimal(name, url,species,friend){
+	const submittedName = name;
+	const submittedURL = url;
+	const submittedSpecies = species;
+	const submittedFriendliness = friend;
 	const dictItemName = "Hey_" + submittedName;
 	AnimalArray.push(new NewAnimalObj(submittedName,submittedURL,submittedSpecies,submittedFriendliness,AnimalArray.count++));
 	//AnimalArray[dictItemName] = new NewAnimalObj(submittedName,submittedURL,submittedSpecies,submittedFriendliness,AnimalArray.count++)); //AnimalArray.count++ adds one to the array count to make it easier to track each animal. Might run into an issue where the array count is one higher than it should be, but need to test that first.
@@ -63,6 +75,7 @@ function SumbitNewAnimal(){
 
 function ResetForm(){
 	console.log("Resetting the form")
+	document.getElementById("PetForm").reset();
 }
 
 function ExportToDB(){
@@ -92,6 +105,78 @@ function RemoveAnimal(indexName){
 	*/
 }
 
+function CheckAndSubmit(){
+	console.log("We clicked on the button");
+	const petName = document.getElementById('Pet_Name');
+	const profile = document.getElementById('ProfileURL');
+	const species = document.getElementById('SpeciesFieldSet');
+	
+	const speciesField = species.querySelectorAll('input[type="radio"]');
+	let speciesResult;
+	
+	  for (const species of speciesField) {
+        if (species.checked) {
+            speciesResult = species.value;
+            break;
+        }
+    }
+	
+	
+	let finalSpeciesText = "";
+	switch(speciesResult){
+			
+			case "Dog":
+			finalSpeciesText = "Dog";
+			break;
+			
+		case "Cats":
+			finalSpeciesText = "Cat";
+			break;
+			
+		case "Birds":
+			finalSpeciesText = "Bird";
+			break;
+}
+	
+		const finalCheckbox = document.getElementById('PetFriendliness');
+
+		let finalCheckboxText = "";
+	
+		if(finalCheckbox.checked)
+		{
+				finalCheckboxText = "They are friendly";
+		}
+	
+		else
+		{
+				finalCheckboxText = "They are not friendly";
+		}
+			
+	SumbitNewAnimal(petName.value, profile.value, finalSpeciesText, finalCheckboxText);
+	console.log(AnimalArray);
+	StartupCardInfo();
+}
+
+document.getElementById("PetForm").addEventListener("submit", function(event){
+	event.preventDefault();
+	alert("Form submitted");
+	CheckAndSubmit();
+	ResetForm();
+});
+
+
 // How image alt should go... "This is a picture of " + name + " animal of the species " + "species. This is a " + friendliness + " animal";
 
-StartupCardInfo();
+//StartupCardInfo();
+
+
+
+PopulateCard(cardList[1],
+				"images/Batman-Logo.png",
+				"This is a picture of " + "Batman" + " animal of the species " + "Vengence" + ". This is a " + "Not Nice" + " animal",
+				"Batman",
+				 "Vengence" ,
+				"Not Nice",
+				"PetEl" + parseFloat(0).toString(),
+				parseFloat(0)
+				);
