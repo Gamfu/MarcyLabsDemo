@@ -5,6 +5,19 @@ upload items to db when finished creating them
 */
 console.log("Hello World");
 
+const mongo = require('mongodb').MongoClient
+const mongoUrl = 'mongodb://localhost:27017'
+const dbName = 'animalGenerator'
+
+mongo.connect(mongoUrl, (err, client) => {
+ if (err) {
+  console.error(err);
+  return;
+}
+ console.log('Connected successfully to server');
+ const db = client.db(dbName);
+})
+
 // Dictionary makes element easy to delete
 // List makes element easy to find and use
 
@@ -29,7 +42,7 @@ let AnimalDict = {}
 let nameCount;
 nameCount = 0;
 
-function PopulateCard(cardID, newImg, newAlt, newName, speciesType, friendliness, BtnNumber, ArrayIndex){
+function PopulateCard(cardID, newImg, newAlt, newName, speciesType, friendliness, ArrayIndex){
 	const child = cardID.children;
 	child[0].src = newImg;
 	child[0].alt = newAlt;
@@ -38,7 +51,6 @@ function PopulateCard(cardID, newImg, newAlt, newName, speciesType, friendliness
 	stepChild[0].innerHTML = newName;
 	stepChild[1].innerHTML = speciesType;
 	stepChild[2].innerHTML = friendliness;
-	ButtonDictionary[BtnNumber] = ArrayIndex;
 }
 
 function NewAnimalObj (name, url, species, kindness, animalNum){
@@ -51,14 +63,13 @@ function NewAnimalObj (name, url, species, kindness, animalNum){
 
 function ManageCardInfo(){
 		for(var i = 0; i <= 2; i++){
-		PopulateCard(cardList[i],
+		PopulateCard(
+				cardList[i],
 				AnimalArray[i].url,
-				"This is a picture of the animal named " + AnimalArray[i].name + ". They're of the species " + AnimalArray[i].species + ". This is a " + AnimalArray[i].kindness + " animal",
+				"This is a picture of the animal named " + AnimalArray[i].name + ". They're of the species " + AnimalArray[i].species + ". This is a " + AnimalArray[i].friendliness + " animal",
 				AnimalArray[i].name,
 				AnimalArray[i].species,
-				AnimalArray[i].kindness,
-				"card2",
-				AnimalArray[i].animalNum
+				AnimalArray[i].friendliness,
 				);
 	}
 }
@@ -77,10 +88,10 @@ function SumbitNewAnimal(name, url,species,friend){
 	const submittedFriendliness = friend;
 	const dictItemName = "Hey_" + submittedName;
 	
-	AnimalArray.push(new NewAnimalObj(submittedName,submittedURL,submittedSpecies,submittedFriendliness,AnimalArray.length));
-	AnimalDict[submittedName] = [submittedURL,submittedSpecies,submittedFriendliness,AnimalArray.length];
+	AnimalArray.push({id: AnimalArray.length, name : submittedName, url : submittedURL, species: submittedSpecies, friendliness: submittedFriendliness});
+
 	console.log(AnimalDict);
-	//AnimalArray[dictItemName] = new NewAnimalObj(submittedName,submittedURL,submittedSpecies,submittedFriendliness,AnimalArray.count++)); //AnimalArray.count++ adds one to the array count to make it easier to track each animal. Might run into an issue where the array count is one higher than it should be, but need to test that first.
+	console.log(AnimalArray[0].url);
 	ResetForm();
 }
 
@@ -107,54 +118,27 @@ function RemoveAnimal(btnIdentifier, cardNum){
 	targetArrayIndex = -1;
 	nameCount = 0;
 	
-	for(const key in AnimalDict){
-		if(AnimalDict.hasOwnProperty(childTitle[0].textContent)){
-			console.log("The dict key value is " + AnimalDict[key][3]);
-			targetArrayIndex = parseInt(AnimalDict[key][3] - 1);
+	for(var i = 0; i < AnimalArray.length;i++){
+		if(AnimalArray[i].name === childTitle[0].textContent){
+			console.log("The dict array value is " + AnimalArray[i].id);
+			targetArrayIndex = AnimalArray[i].id;
 			AnimalArray.splice(targetArrayIndex,1);
-			delete AnimalDict[key];
 			console.log(AnimalDict);
 			console.log(AnimalArray);
 		}
 	}
 	
 	// Assign default card info
-	DefaultCardInfo(cardNum)
+	DefaultCardInfo(cardNum);
 	
 	// Get every array index after the target and -1 from the tracked array index
-	for(const adjustedIndex in AnimalDict){
-		for(var i = 0; i < AnimalArray.length;i++){
-			console.log("Array ele name is " + AnimalArray[i].name);
-			console.log("Array dictionary value is is " + adjustedIndex);
-			if(AnimalArray[i].name === adjustedIndex){
-				console.log("Yo we made it");
-				AnimalDict[adjustedIndex][3] = i;
-			}
-		}
+	for(var e = targetArrayIndex; e < AnimalArray.length ;e++){
+		AnimalArray[e].id = parseInt(AnimalArray[e].id) - 1;
+		console.log("Array ele val is " + AnimalArray[e].id);
 	}
 	
-	console.log(AnimalDict);
 	// Populate current index value with new card info
 	
-}
-
-function DoesOnlyOneEntryExists(index,targetStrName, targetSpecies){
-	
-	// searches the index value to determine if another item exist in the list with the same name. 
-	// TODO: If inclined, expand search to match against species and friendliness
-	
-	if(index === targetStrName){
-			console.log("We found an item matching that name");
-			nameCount++;
-			console.log(nameCount);
-		}
-	
-	if(nameCount == 1){
-		return true;
-	}
-	else{
-		return false;
-	}
 }
 
 function CheckAndSubmit(){
@@ -167,34 +151,46 @@ function CheckAndSubmit(){
 	let speciesResult;
 	let radioOptionSelected;
 	let finalSpeciesText = "";
+		
+	console.log("The species option is " + speciesField);
+	console.log("The species option is " + speciesField[0].value);
+	console.log("The species option is " + speciesField[0].checked);
 
 	
 	  for (const species of speciesField) {
-        if (species.checked) {
+		  console.log(species.value);
+		  console.log(species.checked);
+        if (species.checked) 
+		{
 			radioOptionSelected = true;
             speciesResult = species.value;
+			console.log("The species option is " + speciesResult);
+
 			
-			switch(speciesResult){
-			
-			case "Dog":
-				finalSpeciesText = "Dog";
-				break;
-			
-			case "Cats":
-				finalSpeciesText = "Cat";
-				break;
-			
-			case "Birds":
-				finalSpeciesText = "Bird";
-				break;
-		}
+			switch(speciesResult)
+			{
+				case "Dog":
+					finalSpeciesText = "Dog";
+					break;
+
+				case "Cats":
+					finalSpeciesText = "Cat";
+					break;
+
+				case "Birds":
+					finalSpeciesText = "Bird";
+					break;
+			}
             break;
         }
-		  else{
-			  radioOptionSelected = false;
-			  break;
-		  }
+	    else
+		{
+			radioOptionSelected = false;
+			 break;
+		}
     }
+	
+	console.log("The radio option is " + radioOptionSelected);
 	
 		const finalCheckbox = document.getElementById('PetFriendliness');
 
@@ -215,19 +211,21 @@ function CheckAndSubmit(){
 
 	const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
 	
-	ValidateFieldSet();
+	//ValidateFieldSet();
 	
 	console.log(urlRegex.test(profile.value));
 	
 	if(urlRegex.test(profile.value)){
-		console.log("This file is an image");	
+		console.log("This file is an image");
+		
 		if(radioOptionSelected === true){
-		SumbitNewAnimal(petName.value, profile.value, finalSpeciesText, finalCheckboxText);
-		console.log(AnimalArray);
-		ManageCardInfo();
+			SumbitNewAnimal(petName.value, profile.value, finalSpeciesText, finalCheckboxText);
+			console.log(AnimalArray);
+			ManageCardInfo();
 		}
 		else{
 			alert("Please select a species before continuing");
+			return;
 		}
 	}
 	else{
@@ -238,32 +236,14 @@ function CheckAndSubmit(){
 
 function DefaultCardInfo(cardIndex)
 {
-	PopulateCard(cardList[cardIndex],
+	PopulateCard(
+				cardList[cardIndex],
 				"images/noAnimals.png",
 				"No animals have been loaded for this card",
 				"Pup Doe",
 				 "None" ,
 				"N/A",
-				"PetEl" + parseFloat(0).toString(),
-				parseFloat(0)
 				);
-}
-
-function ValidateFieldSet(){
-	const selectDog = document.getElementById("GoodBoy");
-	const selectCat = document.getElementById("DevilSpawn");
-	const selectBird = document.getElementById("NYCPigeon");
-	
-	const dogRadio = selectDog.querySelectorAll('input[type="radio"]');
-	const catRadio = selectCat.querySelectorAll('input[type="radio"]');
-	const birdRadio = selectBird.querySelectorAll('input[type="radio"]');
-	
-	if(dogRadio.checked){
-		console.log("The dog radio button has been clicked");
-	}
-	else{
-		console.log("No dog")
-	}
 }
 
 document.getElementById("PetForm").addEventListener("submit", function(event){
